@@ -12,6 +12,7 @@ local Mouse = LocalPlayer:GetMouse();
 local ProtectGui = protectgui or (syn and syn.protect_gui) or (function() end);
 
 local ScreenGui = Instance.new('ScreenGui');
+ScreenGui.Name = 'jasdghdahjghjgadhjgadsjhgfeafse';
 ProtectGui(ScreenGui);
 
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Global;
@@ -32,7 +33,7 @@ local Library = {
     FontColor = Color3.fromRGB(255, 255, 255);
     MainColor = Color3.fromRGB(28, 28, 28);
     BackgroundColor = Color3.fromRGB(20, 20, 20);
-    AccentColor = Color3.fromRGB(0, 85, 255);
+    AccentColor = Color3.fromRGB(255, 255, 255);
     OutlineColor = Color3.fromRGB(50, 50, 50);
     RiskColor = Color3.fromRGB(255, 50, 50),
 
@@ -514,25 +515,6 @@ do
             Parent = SatVibMapInner;
         });
 
-        local CursorOuter = Library:Create('ImageLabel', {
-            AnchorPoint = Vector2.new(0.5, 0.5);
-            Size = UDim2.new(0, 6, 0, 6);
-            BackgroundTransparency = 1;
-            Image = 'http://www.roblox.com/asset/?id=9619665977';
-            ImageColor3 = Color3.new(0, 0, 0);
-            ZIndex = 19;
-            Parent = SatVibMap;
-        });
-
-        local CursorInner = Library:Create('ImageLabel', {
-            Size = UDim2.new(0, CursorOuter.Size.X.Offset - 2, 0, CursorOuter.Size.Y.Offset - 2);
-            Position = UDim2.new(0, 1, 0, 1);
-            BackgroundTransparency = 1;
-            Image = 'http://www.roblox.com/asset/?id=9619665977';
-            ZIndex = 20;
-            Parent = CursorOuter;
-        })
-
         local HueSelectorOuter = Library:Create('Frame', {
             BorderColor3 = Color3.new(0, 0, 0);
             Position = UDim2.new(0, 208, 0, 25);
@@ -547,15 +529,6 @@ do
             Size = UDim2.new(1, 0, 1, 0);
             ZIndex = 18;
             Parent = HueSelectorOuter;
-        });
-
-        local HueCursor = Library:Create('Frame', { 
-            BackgroundColor3 = Color3.new(1, 1, 1);
-            AnchorPoint = Vector2.new(0, 0.5);
-            BorderColor3 = Color3.new(0, 0, 0);
-            Size = UDim2.new(1, 0, 0, 1);
-            ZIndex = 18;
-            Parent = HueSelectorInner;
         });
 
         local HueBoxOuter = Library:Create('Frame', {
@@ -614,7 +587,7 @@ do
             TextColor3 = Library.FontColor
         });
 
-        local TransparencyBoxOuter, TransparencyBoxInner, TransparencyCursor;
+        local TransparencyBoxOuter, TransparencyBoxInner;
         
         if Info.Transparency then 
             TransparencyBoxOuter = Library:Create('Frame', {
@@ -641,15 +614,6 @@ do
                 Size = UDim2.new(1, 0, 1, 0);
                 Image = 'http://www.roblox.com/asset/?id=12978095818';
                 ZIndex = 20;
-                Parent = TransparencyBoxInner;
-            });
-
-            TransparencyCursor = Library:Create('Frame', { 
-                BackgroundColor3 = Color3.new(1, 1, 1);
-                AnchorPoint = Vector2.new(0.5, 0);
-                BorderColor3 = Color3.new(0, 0, 0);
-                Size = UDim2.new(0, 1, 1, 0);
-                ZIndex = 21;
                 Parent = TransparencyBoxInner;
             });
         end;
@@ -848,11 +812,7 @@ do
 
             if TransparencyBoxInner then
                 TransparencyBoxInner.BackgroundColor3 = ColorPicker.Value;
-                TransparencyCursor.Position = UDim2.new(1 - ColorPicker.Transparency, 0, 0, 0);
             end;
-
-            CursorOuter.Position = UDim2.new(ColorPicker.Sat, 0, 1 - ColorPicker.Vib, 0);
-            HueCursor.Position = UDim2.new(0, 0, ColorPicker.Hue, 0);
 
             HueBox.Text = '#' .. ColorPicker.Value:ToHex()
             RgbBox.Text = table.concat({ math.floor(ColorPicker.Value.R * 255), math.floor(ColorPicker.Value.G * 255), math.floor(ColorPicker.Value.B * 255) }, ', ')
@@ -1351,57 +1311,58 @@ do
     end;
 
     function Funcs:AddLabel(Text, DoesWrap)
-        local Label = {};
-
-        local Groupbox = self;
-        local Container = Groupbox.Container;
-
+        local Label = {}
+    
+        local Groupbox = self
+        local Container = Groupbox.Container
+    
         local TextLabel = Library:CreateLabel({
-            Size = UDim2.new(1, -4, 0, 15);
-            TextSize = 14;
-            Text = Text;
+            Size = UDim2.new(1, -4, 0, 15),
+            TextSize = 14,
+            Text = Text,
             TextWrapped = DoesWrap or false,
-            TextXAlignment = Enum.TextXAlignment.Left;
-            ZIndex = 5;
-            Parent = Container;
-        });
-
+            TextXAlignment = Enum.TextXAlignment.Left,
+            ZIndex = 5,
+            Parent = Container,
+        })
+    
         if DoesWrap then
             local Y = select(2, Library:GetTextBounds(Text, Library.Font, 14, Vector2.new(TextLabel.AbsoluteSize.X, math.huge)))
             TextLabel.Size = UDim2.new(1, -4, 0, Y)
         else
             Library:Create('UIListLayout', {
-                Padding = UDim.new(0, 4);
-                FillDirection = Enum.FillDirection.Horizontal;
-                HorizontalAlignment = Enum.HorizontalAlignment.Right;
-                SortOrder = Enum.SortOrder.LayoutOrder;
-                Parent = TextLabel;
-            });
+                Padding = UDim.new(0, 4),
+                FillDirection = Enum.FillDirection.Horizontal,
+                HorizontalAlignment = Enum.HorizontalAlignment.Right,
+                SortOrder = Enum.SortOrder.LayoutOrder,
+                Parent = TextLabel,
+            })
         end
-
-        Label.TextLabel = TextLabel;
-        Label.Container = Container;
-
-        function Label:SetText(Text)
-            TextLabel.Text = Text
-
+    
+        Label.TextLabel = TextLabel
+        Label.Container = Container
+    
+        function Label:SetText(NewText)
+            TextLabel.Text = NewText
+    
             if DoesWrap then
-                local Y = select(2, Library:GetTextBounds(Text, Library.Font, 14, Vector2.new(TextLabel.AbsoluteSize.X, math.huge)))
+                local Y = select(2, Library:GetTextBounds(NewText, Library.Font, 14, Vector2.new(TextLabel.AbsoluteSize.X, math.huge)))
                 TextLabel.Size = UDim2.new(1, -4, 0, Y)
             end
-
-            Groupbox:Resize();
+    
+            Groupbox:Resize()
         end
-
-        if (not DoesWrap) then
-            setmetatable(Label, BaseAddons);
+    
+        if not DoesWrap then
+            setmetatable(Label, BaseAddons)
         end
-
-        Groupbox:AddBlank(5);
-        Groupbox:Resize();
-
-        return Label;
-    end;
+    
+        Groupbox:AddBlank(5)
+        Groupbox:Resize()
+    
+        return Label
+    end
+    
 
     function Funcs:AddButton(...)
         -- TODO: Eventually redo this
@@ -1769,31 +1730,12 @@ do
             if not Box:IsFocused() or Box.TextBounds.X <= reveal - 2 * PADDING then
                 -- we aren't focused, or we fit so be normal
                 Box.Position = UDim2.new(0, PADDING, 0, 0)
-            else
-                -- we are focused and don't fit, so adjust position
-                local cursor = Box.CursorPosition
-                if cursor ~= -1 then
-                    -- calculate pixel width of text from start to cursor
-                    local subtext = string.sub(Box.Text, 1, cursor-1)
-                    local width = TextService:GetTextSize(subtext, Box.TextSize, Box.Font, Vector2.new(math.huge, math.huge)).X
-
-                    -- check if we're inside the box with the cursor
-                    local currentCursorPos = Box.Position.X.Offset + width
-
-                    -- adjust if necessary
-                    if currentCursorPos < PADDING then
-                        Box.Position = UDim2.fromOffset(PADDING-width, 0)
-                    elseif currentCursorPos > reveal - PADDING - 1 then
-                        Box.Position = UDim2.fromOffset(reveal-width-PADDING-1, 0)
-                    end
-                end
             end
         end
 
         task.spawn(Update)
 
         Box:GetPropertyChangedSignal('Text'):Connect(Update)
-        Box:GetPropertyChangedSignal('CursorPosition'):Connect(Update)
         Box.FocusLost:Connect(Update)
         Box.Focused:Connect(Update)
 
@@ -3546,45 +3488,7 @@ function Library:CreateWindow(...)
         if Toggled then
             -- A bit scuffed, but if we're going from not toggled -> toggled we want to show the frame immediately so that the fade is visible.
             Outer.Visible = true;
-
-            task.spawn(function()
-                -- TODO: add cursor fade?
-                local State = InputService.MouseIconEnabled;
-
-                local Cursor = Drawing.new('Triangle');
-                Cursor.Thickness = 1;
-                Cursor.Filled = true;
-                Cursor.Visible = true;
-
-                local CursorOutline = Drawing.new('Triangle');
-                CursorOutline.Thickness = 1;
-                CursorOutline.Filled = false;
-                CursorOutline.Color = Color3.new(0, 0, 0);
-                CursorOutline.Visible = true;
-
-                while Toggled and ScreenGui.Parent do
-                    InputService.MouseIconEnabled = false;
-
-                    local mPos = InputService:GetMouseLocation();
-
-                    Cursor.Color = Library.AccentColor;
-
-                    Cursor.PointA = Vector2.new(mPos.X, mPos.Y);
-                    Cursor.PointB = Vector2.new(mPos.X + 16, mPos.Y + 6);
-                    Cursor.PointC = Vector2.new(mPos.X + 6, mPos.Y + 16);
-
-                    CursorOutline.PointA = Cursor.PointA;
-                    CursorOutline.PointB = Cursor.PointB;
-                    CursorOutline.PointC = Cursor.PointC;
-
-                    RenderStepped:Wait();
-                end;
-
-                InputService.MouseIconEnabled = State;
-
-                Cursor:Remove();
-                CursorOutline:Remove();
-            end);
+            
         end;
 
         for _, Desc in next, Outer:GetDescendants() do
